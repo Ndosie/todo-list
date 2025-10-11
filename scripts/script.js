@@ -1,5 +1,5 @@
-import { Project, Todo } from "../modal/modals"
-import { retrieve, save } from "../service/local_storage"
+import { Project, Todo } from "../modal/modals.js"
+import { retrieve, save } from "../service/local_storage.js"
 
 let projects = []
 let todos = []
