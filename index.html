@@ -3,10 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/styles.css">
     <title>Todo App</title>
 </head>
 <body>
-    <h1>Todo App</h1>
+    <div class="sidebar">
+        <h1>Todo App</h1>
+        <div>
+            <p>Today</p>
+            <p>Next 7 days</p>
+            <p>Next month</p>
+        </div>
+    </div>
+    <div class="header">
+        <div class="avatar">
+            <span>DP</span>
+            <p class="name">Esther Ndosi</p>
+            <p class="handle">@endosi</p>
+        </div>
+        <button id="add-project">Add Project</button>
+    </div>
+    
+    <div class="contents">
+        <p class="title">Your Projects</p>
+        <div class="cards">
+            <div class="card">
+                <button type="button" class="collapsible">Project 1</button>
+                <div class="todos">
+                    <p>Todo 1 by 31st Jan 2026</p>
+                    <p>Todo 2 by 31st Jan 2026</p>
+                    <p>Todo 3 by 31st Jan 2026</p>
+                    <button type="button" id="add-todo">Add todo</button>
+                </div>
+            </div>
+            <div class="card">
+                <button type="button" class="collapsible">Project 2</button>
+                <div class="todos">
+                    <p>Todo 1 by 31st Jan 2026</p>
+                    <p>Todo 2 by 31st Jan 2026</p>
+                    <p>Todo 3 by 31st Jan 2026</p>
+                    <p>Todo 4 by 31st Jan 2026</p>
+                    <p>Todo 5 by 31st Jan 2026</p>
+                    <p>Todo 1 by 31st Jan 2026</p>
+                    <p>Todo 2 by 31st Jan 2026</p>
+                    <p>Todo 3 by 31st Jan 2026</p>
+                    <p>Todo 4 by 31st Jan 2026</p>
+                    <p>Todo 5 by 31st Jan 2026</p>
+                    <button type="button" id="add-todo">Add todo</button>
+                </div>
+            </div>
+            <div class="card">
+                <button type="button" class="collapsible">Project 3</button>
+                <div class="todos">
+                    <p>Todo 1 by 31st Jan 2026</p>
+                    <p>Todo 2 by 31st Jan 2026</p>
+                    <p>Todo 3 by 31st Jan 2026</p>
+                    <button type="button" id="add-todo">Add todo</button>
+                </div>
+            </div>
+            <div class="card">
+                <button type="button" class="collapsible">Project 4</button>
+                <div class="todos">
+                    <p>Todo 1 by 31st Jan 2026</p>
+                    <p>Todo 2 by 31st Jan 2026</p>
+                    <p>Todo 3 by 31st Jan 2026</p>
+                    <p>Todo 4 by 31st Jan 2026</p>
+                    <p>Todo 5 by 31st Jan 2026</p>
+                    <button type="button" id="add-todo">Add todo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <dialog id="todo-details">
+        <p>Project Name</p>
+        <p>Title: Todo 1</p>
+        <p>Priority: Medium</p>
+        <p>by 31 Jan 2026</p>
+        <p>Done?<input type="checkbox" id="done-checkbox"/></p>
+    </dialog>
+    <dialog id="todo-form">
+        <form id="add-todo-form">
+            
+        </form>
+    </dialog>
     <script type="module" src="scripts/script.js"></script>
 </body>
 </html>
