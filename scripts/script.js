@@ -49,3 +49,41 @@ deleteItem('todos', todos[0].id)
 
 console.log('After deleting a todo')
 printReport()
+
+const collapseBtns = document.querySelectorAll('.collapsible')
+const addProjectBtn = document.querySelector('#add-project')
+const addProjectDlg = document.querySelector('#project-form')
+const cancelProjectDlg = document.querySelector('#project-cancel-dia')
+const addTodoBtns = document.querySelectorAll('.add-todo')
+const addTodoDlg = document.querySelector('#todo-form')
+const cancelTodoDlg = document.querySelector('#todo-cancel-dia')
+
+collapseBtns.forEach((btn) => {
+    btn.addEventListener('click', function() {
+        this.classList.toggle("active");
+        let card = this.nextElementSibling;
+        if (card.style.display === "block") {
+            card.style.display = "none"
+        } else {
+            card.style.display = "block"
+        }
+    })
+})
+
+addProjectBtn.addEventListener('click', () => {
+    addProjectDlg.showModal()
+})
+
+cancelProjectDlg.addEventListener('click', () => {
+    addProjectDlg.close()
+})
+
+addTodoBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        addTodoDlg.showModal()
+    })
+})
+
+cancelTodoDlg.addEventListener('click', () => {
+    addTodoDlg.close()
+})

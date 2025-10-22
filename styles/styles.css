@@ -9,6 +9,21 @@ body {
     min-height: 100vh;
 }
 
+h3 {
+    margin: 5px;
+    text-align: center;
+}
+
+.header button, dialog button, .todos button {
+    background-color: #1892d3;
+    border: 0px;
+    color: white;
+    font-size: medium;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
 /************Header*******************/
 .header {
     grid-column: 2 / 3;
@@ -53,16 +68,6 @@ body {
     border-radius: 50%;
 }
 
-.header button {
-    background-color: #1892d3;
-    border: 0px;
-    color: white;
-    font-size: medium;
-    font-weight: bold;
-    border-radius: 8px;
-    padding: 8px 16px;
-}
-
 /***************Sidebar*******************/
 .sidebar {
     background-color: #1892d3;
@@ -91,10 +96,16 @@ body {
     font-size: large;
 }
 
+.card, dialog {
+    border-left: 1px solid #1892d3;
+    border-right: 1px solid #1892d3;
+    border-bottom: 1px solid #1892d3;
+}
+
 .card {
     background-color: white;
-    border-radius: 8px;
     height: fit-content;
+    box-sizing: border-box;
 }
 
 .todos {
@@ -124,4 +135,53 @@ body {
 
 .active:after {
   content: "-";
+}
+
+.collapsible:hover {
+  background-color: #4ca9c9;
+}
+
+/************Forms & Dialogs*****************/
+dialog {
+    padding: 0;
+    border-top: 0;
+    width: 300px;
+}
+
+.form-controls {
+    margin: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 8px;
+}
+
+.form-controls div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: start;
+}
+
+.form-btns {
+    display: flex;
+}
+
+input, textarea {
+    padding: 10px;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+input:focus, textarea:focus {
+    border: 1px solid #1892d3;
+    outline: none;
+}
+
+.dia-header {
+    background-color: #1892d3;
+    width: 100%;
+    padding: 16px;
+    color: white;
+    text-align: center;
 }

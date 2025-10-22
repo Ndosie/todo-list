@@ -33,7 +33,7 @@
                     <p>Todo 1 by 31st Jan 2026</p>
                     <p>Todo 2 by 31st Jan 2026</p>
                     <p>Todo 3 by 31st Jan 2026</p>
-                    <button type="button" id="add-todo">Add todo</button>
+                    <button type="button" class="add-todo">Add todo</button>
                 </div>
             </div>
             <div class="card">
@@ -49,7 +49,7 @@
                     <p>Todo 3 by 31st Jan 2026</p>
                     <p>Todo 4 by 31st Jan 2026</p>
                     <p>Todo 5 by 31st Jan 2026</p>
-                    <button type="button" id="add-todo">Add todo</button>
+                    <button type="button" class="add-todo">Add todo</button>
                 </div>
             </div>
             <div class="card">
@@ -58,7 +58,7 @@
                     <p>Todo 1 by 31st Jan 2026</p>
                     <p>Todo 2 by 31st Jan 2026</p>
                     <p>Todo 3 by 31st Jan 2026</p>
-                    <button type="button" id="add-todo">Add todo</button>
+                    <button type="button" class="add-todo">Add todo</button>
                 </div>
             </div>
             <div class="card">
@@ -69,11 +69,35 @@
                     <p>Todo 3 by 31st Jan 2026</p>
                     <p>Todo 4 by 31st Jan 2026</p>
                     <p>Todo 5 by 31st Jan 2026</p>
-                    <button type="button" id="add-todo">Add todo</button>
+                    <button type="button" class="add-todo">Add todo</button>
                 </div>
             </div>
         </div>
     </div>
+    <dialog id="project-form">
+        <div class="dia-header">
+            <h3>Add Project Form</h3>
+        </div>
+        <form id="add-project-form" novalidate>
+            <div class="form-controls">
+                <p>* Required</p>
+                <div>
+                    <label for="project-title">Title *</label>
+                    <input type="text" name="project-title" min="3" required />
+                    <span class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="description">Description *</label>
+                    <textarea id="description" cols="30" rows="10"></textarea>
+                    <span class="error" aria-live="polite"></span>
+                </div>
+                <div class="form-btns">
+                    <button type="submit">Add</button>
+                    <button type="button" id="project-cancel-dia">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </dialog>
     <dialog id="todo-details">
         <p>Project Name</p>
         <p>Title: Todo 1</p>
@@ -82,8 +106,37 @@
         <p>Done?<input type="checkbox" id="done-checkbox"/></p>
     </dialog>
     <dialog id="todo-form">
-        <form id="add-todo-form">
-            
+        <div class="dia-header">
+            <h3>Add Todo Form</h3>
+        </div>
+        <form id="add-todo-form" novalidate>
+             <div class="form-controls">
+                <p>* Required</p>
+                <div>
+                    <label for="todo-title">Title *</label>
+                    <input type="text" name="todo-title" min="3" required />
+                    <span class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="priority">Priority *</label>
+                    <input type="data" id="priority" list="priorities" name="priority" required/>
+                    <span class="error" aria-live="polite"></span>
+                    <datalist id="priorities">
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </datalist>
+                </div>
+                <div>
+                    <label for="due-date">Due Date *</label>
+                    <input type="date" name="due-date" required />
+                    <span class="error" aria-live="polite"></span>
+                </div>
+                <div class="form-btns">
+                    <button type="submit">Add</button>
+                    <button type="button" id="todo-cancel-dia">Cancel</button>
+                </div>
+            </div>
         </form>
     </dialog>
     <script type="module" src="scripts/script.js"></script>
