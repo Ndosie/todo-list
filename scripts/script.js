@@ -57,6 +57,9 @@ const cancelProjectDlg = document.querySelector('#project-cancel-dia')
 const addTodoBtns = document.querySelectorAll('.add-todo')
 const addTodoDlg = document.querySelector('#todo-form')
 const cancelTodoDlg = document.querySelector('#todo-cancel-dia')
+const detailsPars = document.querySelectorAll('.todos p')
+const detailsDlg = document.querySelector('#todo-details')
+const closeIcon =document.querySelector('#close-icon')
 
 collapseBtns.forEach((btn) => {
     btn.addEventListener('click', function() {
@@ -87,3 +90,13 @@ addTodoBtns.forEach(btn => {
 cancelTodoDlg.addEventListener('click', () => {
     addTodoDlg.close()
 })
+
+detailsPars.forEach(par => {
+    par.addEventListener('click', () => {
+        detailsDlg.showModal()
+    })
+})
+
+closeIcon.addEventListener('click', () => {
+    detailsDlg.close()
+} )
