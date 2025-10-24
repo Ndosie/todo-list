@@ -1,19 +1,20 @@
 import { Project, Todo } from "../modal/modals.js"
 import { deleteItem, update, retrieve, save } from "../service/local_storage.js"
+import { validateInputs, showError} from "./validate_form.js"
 
-const proj1 = new Project('Todo Application', 'An application which saves todos')
-save(proj1, 'projects')
-const proj2 = new Project('Mic Courier Website', 'A static website which display information')
-save(proj2, 'projects')
+// //const proj1 = new Project('Todo Application', 'An application which saves todos')
+// save(proj1, 'projects')
+// const proj2 = new Project('Mic Courier Website', 'A static website which display information')
+// save(proj2, 'projects')
 
 let projects = retrieve('projects')
 
-const todo1 = new Todo(projects[0].id, 'Prepare pseudocode', '11/10/2025', 'High')
-save(todo1)
-const todo2 = new Todo(projects[1].id, 'Set a project scheleton', '11/10/2025', 'Medium')
-save(todo2)
-const todo3 = new Todo(projects[0].id, 'Prepare Designs', '16/10/2025', 'Medium')
-save(todo3)
+// const todo1 = new Todo(projects[0].id, 'Prepare pseudocode', '11/10/2025', 'High')
+// save(todo1)
+// const todo2 = new Todo(projects[1].id, 'Set a project scheleton', '11/10/2025', 'Medium')
+// save(todo2)
+// const todo3 = new Todo(projects[0].id, 'Prepare Designs', '16/10/2025', 'Medium')
+// save(todo3)
 let todos = retrieve('todos')
 
 function printReport() {
@@ -28,27 +29,27 @@ function printReport() {
         })
     });
 }
-console.log('Start')
-printReport()
+// console.log('Start')
+// printReport()
 
-update('projects', projects[0].id, {title:'I have changed a project', description: 'do you see me?'})
+// update('projects', projects[0].id, {title:'I have changed a project', description: 'do you see me?'})
 
-console.log('After updating a project')
-printReport()
+// console.log('After updating a project')
+// printReport()
 
-update('todos', todos[1].id, {title:'I have changed a todo', description: 'do you see me as a todo?'})
-console.log('After updating a todo')
-printReport()
+// update('todos', todos[1].id, {title:'I have changed a todo', description: 'do you see me as a todo?'})
+// console.log('After updating a todo')
+// printReport()
 
-deleteItem('projects', projects[1].id)
+// deleteItem('projects', projects[1].id)
 
-console.log('After deleting a project')
-printReport()
+// console.log('After deleting a project')
+// printReport()
 
-deleteItem('todos', todos[0].id)
+// deleteItem('todos', todos[0].id)
 
-console.log('After deleting a todo')
-printReport()
+// console.log('After deleting a todo')
+// printReport()
 
 const collapseBtns = document.querySelectorAll('.collapsible')
 const addProjectBtn = document.querySelector('#add-project')
@@ -60,6 +61,8 @@ const cancelTodoDlg = document.querySelector('#todo-cancel-dia')
 const detailsPars = document.querySelectorAll('.todos p')
 const detailsDlg = document.querySelector('#todo-details')
 const closeIcon =document.querySelector('#close-icon')
+const addProjectForm = document.querySelector('#add-project-form')
+const addTodoForm = document.querySelector('#add-todo-form')
 
 collapseBtns.forEach((btn) => {
     btn.addEventListener('click', function() {
@@ -99,4 +102,34 @@ detailsPars.forEach(par => {
 
 closeIcon.addEventListener('click', () => {
     detailsDlg.close()
-} )
+})
+
+validateInputs()
+
+addProjectForm.addEventListener('submit', (event) => {
+    if (!addProjectForm.checkValidity()) {
+        event.preventDefault()
+        showError()
+        return
+    } else {
+        const formData = new FormData(addProjectForm)
+        const projectTitle = formData.get("project-title")
+        const description = formData.get("description")
+        const project = new Project(projectTitle, description)
+        
+        save(project, 'projects')
+        addProjectForm.reset()
+        addProjectDlg.close()
+        printReport()
+    }
+})
+
+addTodoForm.addEventListener('submit', (event) => {
+    if (!addTodoForm.checkValidity()) {
+        event.preventDefault()
+        showError()
+        return
+    } else {
+
+    }
+})

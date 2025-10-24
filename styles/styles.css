@@ -200,7 +200,6 @@ dialog {
     display: flex;
     flex-direction: column;
     justify-content: start;
-    gap: 8px;
 }
 .form-controls p {
     margin: 8px;
@@ -208,6 +207,7 @@ dialog {
 
 .form-controls .form-btns {
     display: flex;
+    gap: 8px;
 }
 
 input, textarea {
@@ -247,4 +247,29 @@ input[type='checkbox'] {
 
 .material-icons:hover {
     cursor: pointer;
+}
+
+/**************Form Validation******************/
+input:invalid, textarea:invalid {
+  border: 1px solid #990000;
+  background-color:white;
+}
+
+input:valid, textarea:valid {
+  border: 1px solid green;
+}
+
+input:focus:invalid, input:focus:valid, textarea:focus:invalid, textarea:focus:valid {
+  outline: none;
+}
+
+.error {
+  padding: 0;
+  width: fit-content;
+  font-size: 80%;
+  color: white;
+  background-color: #990000;
+  border-radius: 0 0 5px 5px;
+  box-sizing: border-box;
+  display: block;
 }
