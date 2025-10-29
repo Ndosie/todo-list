@@ -7,7 +7,7 @@ export class Project {
 }
 
 export class Todo {
-    constructor(projectId, title, dueDate, priority, status=false) {
+    constructor(projectId, title, priority, dueDate, status=false) {
         this.id = crypto.randomUUID()
         this.projectId = projectId
         this.title = title

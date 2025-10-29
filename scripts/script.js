@@ -2,20 +2,8 @@ import { Project, Todo } from "../modal/modals.js"
 import { deleteItem, update, retrieve, save } from "../service/local_storage.js"
 import { validateInputs, showError} from "./validate_form.js"
 
-// //const proj1 = new Project('Todo Application', 'An application which saves todos')
-// save(proj1, 'projects')
-// const proj2 = new Project('Mic Courier Website', 'A static website which display information')
-// save(proj2, 'projects')
-
-let projects = retrieve('projects')
-
-// const todo1 = new Todo(projects[0].id, 'Prepare pseudocode', '11/10/2025', 'High')
-// save(todo1)
-// const todo2 = new Todo(projects[1].id, 'Set a project scheleton', '11/10/2025', 'Medium')
-// save(todo2)
-// const todo3 = new Todo(projects[0].id, 'Prepare Designs', '16/10/2025', 'Medium')
-// save(todo3)
-let todos = retrieve('todos')
+let projects = []
+let todos = []
 
 function printReport() {
     projects = retrieve('projects')
@@ -24,32 +12,41 @@ function printReport() {
         console.log(`Project Title: ${project.title}`)
         console.log('Todos')
         const projectTodos = todos.filter(todo => todo.projectId === project.id)
-        projectTodos.forEach(todo => {
-            console.log(`Title: ${todo.title} due on ${todo.dueDate}`)
-        })
+        if (projectTodos.length !== 0) {
+            projectTodos.forEach(todo => {
+                console.log(`Title: ${todo.title} due on ${todo.dueDate}`)
+            })
+        } else {
+            console.log('No todos.')
+        }
     });
 }
-// console.log('Start')
-// printReport()
 
-// update('projects', projects[0].id, {title:'I have changed a project', description: 'do you see me?'})
+function setProjects() {
+    const cardsDiv = document.querySelector('.cards')
+    projects = retrieve('projects')
+    todos = retrieve('todos')
 
-// console.log('After updating a project')
-// printReport()
+    let projectsContent = ``
+    projects.forEach(project => {
+        projectsContent += `<div class="card">
+                <button type="button" class="collapsible">${project.title}</button>`
+        projectsContent += `<div class="todos">`
+        const projectTodos = todos.filter(todo => todo.projectId === project.id)
+        if (projectTodos.length !== 0) {
+            projectTodos.forEach(todo => {
+                projectsContent += `<p>${todo.title} by ${todo.dueDate}</p>`
+            })
+        } else {
+            projectsContent += `<div>No todos for this project, Please add one.</div>`
+        }
+        projectsContent += `<button type="button" class="add-todo" id=${project.id}>Add todo</button></div></div>`            
+    })
+    cardsDiv.innerHTML = projectsContent
+}
 
-// update('todos', todos[1].id, {title:'I have changed a todo', description: 'do you see me as a todo?'})
-// console.log('After updating a todo')
-// printReport()
-
-// deleteItem('projects', projects[1].id)
-
-// console.log('After deleting a project')
-// printReport()
-
-// deleteItem('todos', todos[0].id)
-
-// console.log('After deleting a todo')
-// printReport()
+printReport()
+setProjects()
 
 const collapseBtns = document.querySelectorAll('.collapsible')
 const addProjectBtn = document.querySelector('#add-project')
@@ -63,6 +60,8 @@ const detailsDlg = document.querySelector('#todo-details')
 const closeIcon =document.querySelector('#close-icon')
 const addProjectForm = document.querySelector('#add-project-form')
 const addTodoForm = document.querySelector('#add-todo-form')
+let projectId = ""
+
 
 collapseBtns.forEach((btn) => {
     btn.addEventListener('click', function() {
@@ -85,7 +84,8 @@ cancelProjectDlg.addEventListener('click', () => {
 })
 
 addTodoBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+        projectId = e.target.id
         addTodoDlg.showModal()
     })
 })
@@ -121,6 +121,7 @@ addProjectForm.addEventListener('submit', (event) => {
         addProjectForm.reset()
         addProjectDlg.close()
         printReport()
+        setProjects()
     }
 })
 
@@ -130,6 +131,16 @@ addTodoForm.addEventListener('submit', (event) => {
         showError()
         return
     } else {
-
+        const formData = new FormData(addTodoForm)
+        const todoTitle = formData.get("todo-title")
+        const priority = formData.get("priority")
+        const dueDate = formData.get("due-date")
+        const todo = new Todo(projectId, todoTitle, priority, dueDate)
+        
+        save(todo)
+        addTodoForm.reset()
+        addTodoDlg.close()
+        printReport()
+        setProjects()
     }
 })
