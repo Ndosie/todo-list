@@ -35,7 +35,7 @@ function setProjects() {
         const projectTodos = todos.filter(todo => todo.projectId === project.id)
         if (projectTodos.length !== 0) {
             projectTodos.forEach(todo => {
-                projectsContent += `<p>${todo.title} by ${todo.dueDate}</p>`
+                projectsContent += `<p id=${todo.id} class="todo">${todo.title} by ${todo.dueDate}</p>`
             })
         } else {
             projectsContent += `<div>No todos for this project, Please add one.</div>`
@@ -55,13 +55,12 @@ const cancelProjectDlg = document.querySelector('#project-cancel-dia')
 const addTodoBtns = document.querySelectorAll('.add-todo')
 const addTodoDlg = document.querySelector('#todo-form')
 const cancelTodoDlg = document.querySelector('#todo-cancel-dia')
-const detailsPars = document.querySelectorAll('.todos p')
+const todoPars = document.querySelectorAll('.todos p')
 const detailsDlg = document.querySelector('#todo-details')
 const closeIcon =document.querySelector('#close-icon')
 const addProjectForm = document.querySelector('#add-project-form')
 const addTodoForm = document.querySelector('#add-todo-form')
 let projectId = ""
-
 
 collapseBtns.forEach((btn) => {
     btn.addEventListener('click', function() {
@@ -94,9 +93,21 @@ cancelTodoDlg.addEventListener('click', () => {
     addTodoDlg.close()
 })
 
-detailsPars.forEach(par => {
-    par.addEventListener('click', () => {
+todoPars.forEach(par => {
+    par.addEventListener('click', (e) => {
         detailsDlg.showModal()
+        const detailsDiv = document.querySelector(".dia-details")
+        const titleH3 = document.querySelector('.dia-header-todo h3')
+        const todo = todos.find(todo => todo.id === e.target.id)
+        const project = projects.find(project => project.id === todo.projectId)
+
+        titleH3.textContent = project.title
+        detailsDiv.innerHTML = `
+            <h4>${todo.title}</h4>
+            <p>Priority: ${todo.priority}</p>
+            <p>Due Date: ${todo.dueDate}</p>
+            <p>Done?<input type="checkbox" id="${todo.id}"/></p>
+        `
     })
 })
 
