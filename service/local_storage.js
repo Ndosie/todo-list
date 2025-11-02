@@ -22,16 +22,17 @@ export const retrieve = (key) => {
 export const update = (key, id, data) => {
     if (key === 'todos') {
         todos = retrieve(key)
-        const index = todos.findIndex(todo => todo.id === id)
-        todos[index].title = data.title
-        todos[index].dueDate = data.dueDate
-        todos[index].priority = data.priority
+        const todo = todos.find(todo => todo.id === id)
+        todo.title = data.title
+        todo.dueDate = data.dueDate
+        todo.priority = data.priority
+        todo.status = data.status
         localStorage.setItem(key, JSON.stringify(todos))
     } else {
         projects = retrieve(key)
-        const index = projects.findIndex(project => project.id === id)
-        projects[index].title = data.title
-        projects[index].description = data.description
+        const project = projects.find(project => project.id === id)
+        project.title = data.title
+        project.description = data.description
         localStorage.setItem(key, JSON.stringify(projects))
     }
 }

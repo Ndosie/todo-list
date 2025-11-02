@@ -243,6 +243,7 @@ input:focus, textarea:focus {
 input[type='checkbox'] {
     height: 15px;
     width: 15px;
+    margin-bottom: 0;
 }
 
 .material-icons:hover {

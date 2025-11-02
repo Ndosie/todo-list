@@ -60,6 +60,7 @@ const detailsDlg = document.querySelector('#todo-details')
 const closeIcon =document.querySelector('#close-icon')
 const addProjectForm = document.querySelector('#add-project-form')
 const addTodoForm = document.querySelector('#add-todo-form')
+const checkbox = {}
 let projectId = ""
 
 collapseBtns.forEach((btn) => {
@@ -106,8 +107,9 @@ todoPars.forEach(par => {
             <h4>${todo.title}</h4>
             <p>Priority: ${todo.priority}</p>
             <p>Due Date: ${todo.dueDate}</p>
-            <p>Done?<input type="checkbox" id="${todo.id}"/></p>
+            <p>Done?<input type="checkbox" id="${todo.id} class="checkbox" ${todo.status ? "checked" : ""}"/></p>
         `
+        checkbox = document.querySelector(`#${todo.id}`)
     })
 })
 
@@ -154,4 +156,11 @@ addTodoForm.addEventListener('submit', (event) => {
         printReport()
         setProjects()
     }
+})
+
+checkbox.addEventListener('change', (e) => {
+    alert('d')
+    const todo = todos.find(todo => todo.id === e.target.id)
+    todo.toggleStatus()
+    update(todo)
 })
