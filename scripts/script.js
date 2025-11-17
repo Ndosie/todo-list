@@ -45,6 +45,14 @@ function setProjects() {
     cardsDiv.innerHTML = projectsContent
 }
 
+function updateTodoStatus(checkbox) {
+            alert('d')
+//             const todo = todos.find(todo => todo.id === e.target.id.split('-')[1])
+//             todo.toggleStatus()
+//             update(todo)
+// 
+}
+
 printReport()
 setProjects()
 
@@ -60,8 +68,37 @@ const detailsDlg = document.querySelector('#todo-details')
 const closeIcon =document.querySelector('#close-icon')
 const addProjectForm = document.querySelector('#add-project-form')
 const addTodoForm = document.querySelector('#add-todo-form')
-const checkbox = {}
+const overdueSpan = document.querySelector('#overdue > span.notification')
+const todaySpan = document.querySelector('#today > span.notification')
+const weekSpan = document.querySelector('#week > span.notification')
+const monthSpan = document.querySelector('#month > span.notification')
+const doneSpan = document.querySelector('#done > span.notification')
 let projectId = ""
+
+overdueSpan.textContent = todos.filter(todo => {
+    const today = new Date()
+    return new Date(todo.dueDate) < today
+}).length
+
+
+
+weekSpan.textContent = todos.filter(todo => {
+    const today = new Date()
+    const dueDate = new Date(todo.dueDate)
+    const lastDayWeek = new Date(today)
+    lastDayWeek.setDate(today.getDate() + 7)
+    return dueDate > today && dueDate <= lastDayWeek
+}).length
+
+monthSpan.textContent = todos.filter(todo => {
+    const today = new Date();
+    const dueDate = new Date(todo.dueDate)
+    const firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
+    const lastDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0)
+    return dueDate >= firstDayNextMonth && dueDate <= lastDayNextMonth
+}).length
+
+doneSpan.textContent = todos.filter(todo => todo.status === true).length
 
 collapseBtns.forEach((btn) => {
     btn.addEventListener('click', function() {
@@ -107,9 +144,8 @@ todoPars.forEach(par => {
             <h4>${todo.title}</h4>
             <p>Priority: ${todo.priority}</p>
             <p>Due Date: ${todo.dueDate}</p>
-            <p>Done?<input type="checkbox" id="${todo.id} class="checkbox" ${todo.status ? "checked" : ""}"/></p>
+            <p>Done?<input type="checkbox" id="${todo.id}" onchange="updateTodoStatus(this)" class="checkbox" ${todo.status ? "checked" : ""}"/></p>
         `
-        checkbox = document.querySelector(`#${todo.id}`)
     })
 })
 
@@ -156,11 +192,4 @@ addTodoForm.addEventListener('submit', (event) => {
         printReport()
         setProjects()
     }
-})
-
-checkbox.addEventListener('change', (e) => {
-    alert('d')
-    const todo = todos.find(todo => todo.id === e.target.id)
-    todo.toggleStatus()
-    update(todo)
 })

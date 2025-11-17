@@ -103,6 +103,14 @@ a {
     padding: 5px;
 }
 
+#overdue > span.notification, #today > span.notification {
+    background-color: red;
+}
+
+#week > span.notification {
+    background-color: orange;
+}
+
 .links p:hover {
     cursor: pointer;
     font-weight: bold;
