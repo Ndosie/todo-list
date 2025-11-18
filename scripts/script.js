@@ -45,15 +45,7 @@ function setProjects() {
     cardsDiv.innerHTML = projectsContent
 }
 
-function updateTodoStatus(checkbox) {
-            alert('d')
-//             const todo = todos.find(todo => todo.id === e.target.id.split('-')[1])
-//             todo.toggleStatus()
-//             update(todo)
-// 
-}
-
-printReport()
+//printReport()
 setProjects()
 
 const collapseBtns = document.querySelectorAll('.collapsible')
@@ -77,17 +69,30 @@ let projectId = ""
 
 overdueSpan.textContent = todos.filter(todo => {
     const today = new Date()
-    return new Date(todo.dueDate) < today
+    console.log(today)
+    console.log(new Date(todo.dueDate))
+    return !todo.status && (new Date(todo.dueDate) < today);
 }).length
 
+console.log(todos.filter(todo => {
+    const today = new Date()
+    return !todo.status && (new Date(todo.dueDate) < today);
+}))
 
+todaySpan.textContent = todos.filter(todo => {
+    const today = new Date()
+    const dueDate = new Date(todo.dueDate)
+    const date1 = new Date(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}T00:00:00Z`);
+    const date2 = new Date(`${dueDate.getFullYear()}-${dueDate.getMonth()}-${dueDate.getDate()}T00:00:00Z`);
+    return !todo.status && (date1.getTime() === date2.getTime());
+}).length
 
 weekSpan.textContent = todos.filter(todo => {
     const today = new Date()
     const dueDate = new Date(todo.dueDate)
     const lastDayWeek = new Date(today)
     lastDayWeek.setDate(today.getDate() + 7)
-    return dueDate > today && dueDate <= lastDayWeek
+    return !todo.status && (dueDate > today && dueDate <= lastDayWeek)
 }).length
 
 monthSpan.textContent = todos.filter(todo => {
@@ -95,7 +100,7 @@ monthSpan.textContent = todos.filter(todo => {
     const dueDate = new Date(todo.dueDate)
     const firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
     const lastDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0)
-    return dueDate >= firstDayNextMonth && dueDate <= lastDayNextMonth
+    return !todo.status && dueDate >= firstDayNextMonth && dueDate <= lastDayNextMonth
 }).length
 
 doneSpan.textContent = todos.filter(todo => todo.status === true).length
@@ -144,8 +149,13 @@ todoPars.forEach(par => {
             <h4>${todo.title}</h4>
             <p>Priority: ${todo.priority}</p>
             <p>Due Date: ${todo.dueDate}</p>
-            <p>Done?<input type="checkbox" id="${todo.id}" onchange="updateTodoStatus(this)" class="checkbox" ${todo.status ? "checked" : ""}"/></p>
+            <p>Done?<input type="checkbox" id="check_${todo.id}" ${todo.status ? "checked" : ""}/></p>
         `
+        const checkbox = document.querySelector(`#check_${todo.id}`)
+        checkbox.addEventListener('change', () => {
+            todo.status = todo.status ? false : true
+            update(todo.id, todo)
+        })
     })
 })
 

@@ -19,7 +19,7 @@ export const retrieve = (key) => {
     return JSON.parse(localStorage.getItem(key)) ? JSON.parse(localStorage.getItem(key)) : []
 }
 
-export const update = (key, id, data) => {
+export const update = (id, data, key="todos") => {
     if (key === 'todos') {
         todos = retrieve(key)
         const todo = todos.find(todo => todo.id === id)

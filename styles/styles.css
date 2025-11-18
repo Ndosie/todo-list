@@ -107,6 +107,10 @@ a {
     background-color: red;
 }
 
+#done > span.notification {
+    background-color: green;
+}
+
 #week > span.notification {
     background-color: orange;
 }
