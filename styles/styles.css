@@ -133,10 +133,15 @@ a {
     gap: 16px
 }
 
+.cards p{
+    font-size: large;
+    margin: 3px;
+}
+
 .contents > p {
     margin: 3px;
     font-weight: bold;
-    font-size: large;
+    font-size: larger;
 }
 
 .card, dialog {

@@ -5,50 +5,110 @@ import { validateInputs, showError} from "./validate_form.js"
 let projects = []
 let todos = []
 
-function printReport() {
-    projects = retrieve('projects')
-    todos = retrieve('todos')
-    projects.forEach(project => {
-        console.log(`Project Title: ${project.title}`)
-        console.log('Todos')
-        const projectTodos = todos.filter(todo => todo.projectId === project.id)
-        if (projectTodos.length !== 0) {
-            projectTodos.forEach(todo => {
-                console.log(`Title: ${todo.title} due on ${todo.dueDate}`)
-            })
-        } else {
-            console.log('No todos.')
-        }
-    });
+function setCollapseBtns() {
+    const collapseBtns = document.querySelectorAll('.collapsible')
+    collapseBtns.forEach((btn) => {
+        btn.addEventListener('click', function() {
+            this.classList.toggle("active");
+            let card = this.nextElementSibling;
+            if (card.style.display === "block") {
+                card.style.display = "none"
+            } else {
+                card.style.display = "block"
+            }
+        })
+    })
 }
 
-function setProjects() {
+function setProjects(todos) {
     const cardsDiv = document.querySelector('.cards')
     projects = retrieve('projects')
-    todos = retrieve('todos')
 
-    let projectsContent = ``
-    projects.forEach(project => {
-        projectsContent += `<div class="card">
-                <button type="button" class="collapsible">${project.title}</button>`
-        projectsContent += `<div class="todos">`
-        const projectTodos = todos.filter(todo => todo.projectId === project.id)
-        if (projectTodos.length !== 0) {
-            projectTodos.forEach(todo => {
-                projectsContent += `<p id=${todo.id} class="todo">${todo.title} by ${todo.dueDate}</p>`
-            })
-        } else {
-            projectsContent += `<div>No todos for this project, Please add one.</div>`
-        }
-        projectsContent += `<button type="button" class="add-todo" id=${project.id}>Add todo</button></div></div>`            
-    })
-    cardsDiv.innerHTML = projectsContent
+    if (!todos.length) {
+        todos = retrieve('todos')
+    }
+
+    if (projects.length) {
+        let projectsContent = ``
+        projects.forEach(project => {
+            projectsContent += `<div class="card">
+                    <button type="button" class="collapsible">${project.title}</button>`
+            projectsContent += `<div class="todos">`
+            const projectTodos = todos.filter(todo => todo.projectId === project.id)
+            if (projectTodos.length !== 0) {
+                projectTodos.forEach(todo => {
+                    projectsContent += `<p id=${todo.id} class="todo">${todo.title} by ${todo.dueDate}</p>`
+                })
+            } else {
+                projectsContent += `<div>No todos for this project, Please add one.</div>`
+            }
+            projectsContent += `<button type="button" class="add-todo" id=${project.id}>Add todo</button></div></div>`            
+        })
+        cardsDiv.innerHTML = projectsContent
+        setCollapseBtns()
+    } else {
+        cardsDiv.innerHTML = '<p>There is no projects. Please add one.</p>'
+    }
+    
 }
 
-//printReport()
-setProjects()
+function filterTodos(id) {
+    todos = retrieve('todos')
 
-const collapseBtns = document.querySelectorAll('.collapsible')
+    switch(id) {
+        case 'overdue':
+            return todos.filter(todo => {
+                const today = new Date()
+                return !todo.status && new Date(todo.dueDate) < today;
+            })
+        case 'today':
+            return todos.filter(todo => {
+                const today = new Date()
+                const dueDate = new Date(todo.dueDate)
+                const date1 = new Date(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}T00:00:00Z`);
+                const date2 = new Date(`${dueDate.getFullYear()}-${dueDate.getMonth()}-${dueDate.getDate()}T00:00:00Z`);
+                return !todo.status && date1.getTime() === date2.getTime();
+            })
+        case 'week':
+            return todos.filter(todo => {
+                const today = new Date()
+                const dueDate = new Date(todo.dueDate)
+                const lastDayWeek = new Date(today)
+                lastDayWeek.setDate(today.getDate() + 7)
+                return !todo.status && dueDate > today && dueDate <= lastDayWeek
+            })
+        case 'month':
+            return todos.filter(todo => {
+                const today = new Date();
+                const dueDate = new Date(todo.dueDate)
+                const firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
+                const lastDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0)
+                return !todo.status && dueDate >= firstDayNextMonth && dueDate <= lastDayNextMonth
+            })
+        case 'done':
+            return todos.filter(todo => todo.status === true)
+        default:
+            return todos
+    }
+}
+
+function setNotifications() {
+    const overdueSpan = document.querySelector('#overdue > span.notification')
+    const todaySpan = document.querySelector('#today > span.notification')
+    const weekSpan = document.querySelector('#week > span.notification')
+    const monthSpan = document.querySelector('#month > span.notification')
+    const doneSpan = document.querySelector('#done > span.notification')
+    const allSpan = document.querySelector('#all > span.notification')
+    overdueSpan.textContent = filterTodos('overdue').length
+    todaySpan.textContent = filterTodos('today').length
+    weekSpan.textContent = filterTodos('week').length
+    monthSpan.textContent = filterTodos('month').length
+    doneSpan.textContent = filterTodos('done').length
+    allSpan.textContent = filterTodos('all').length
+}
+
+setProjects(todos)
+
 const addProjectBtn = document.querySelector('#add-project')
 const addProjectDlg = document.querySelector('#project-form')
 const cancelProjectDlg = document.querySelector('#project-cancel-dia')
@@ -57,63 +117,19 @@ const addTodoDlg = document.querySelector('#todo-form')
 const cancelTodoDlg = document.querySelector('#todo-cancel-dia')
 const todoPars = document.querySelectorAll('.todos p')
 const detailsDlg = document.querySelector('#todo-details')
-const closeIcon =document.querySelector('#close-icon')
+const closeIcon = document.querySelector('#close-icon')
 const addProjectForm = document.querySelector('#add-project-form')
 const addTodoForm = document.querySelector('#add-todo-form')
-const overdueSpan = document.querySelector('#overdue > span.notification')
-const todaySpan = document.querySelector('#today > span.notification')
-const weekSpan = document.querySelector('#week > span.notification')
-const monthSpan = document.querySelector('#month > span.notification')
-const doneSpan = document.querySelector('#done > span.notification')
+const notificationPars = document.querySelectorAll('.links p')
 let projectId = ""
 
-overdueSpan.textContent = todos.filter(todo => {
-    const today = new Date()
-    console.log(today)
-    console.log(new Date(todo.dueDate))
-    return !todo.status && (new Date(todo.dueDate) < today);
-}).length
+setNotifications()
 
-console.log(todos.filter(todo => {
-    const today = new Date()
-    return !todo.status && (new Date(todo.dueDate) < today);
-}))
-
-todaySpan.textContent = todos.filter(todo => {
-    const today = new Date()
-    const dueDate = new Date(todo.dueDate)
-    const date1 = new Date(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}T00:00:00Z`);
-    const date2 = new Date(`${dueDate.getFullYear()}-${dueDate.getMonth()}-${dueDate.getDate()}T00:00:00Z`);
-    return !todo.status && (date1.getTime() === date2.getTime());
-}).length
-
-weekSpan.textContent = todos.filter(todo => {
-    const today = new Date()
-    const dueDate = new Date(todo.dueDate)
-    const lastDayWeek = new Date(today)
-    lastDayWeek.setDate(today.getDate() + 7)
-    return !todo.status && (dueDate > today && dueDate <= lastDayWeek)
-}).length
-
-monthSpan.textContent = todos.filter(todo => {
-    const today = new Date();
-    const dueDate = new Date(todo.dueDate)
-    const firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
-    const lastDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0)
-    return !todo.status && dueDate >= firstDayNextMonth && dueDate <= lastDayNextMonth
-}).length
-
-doneSpan.textContent = todos.filter(todo => todo.status === true).length
-
-collapseBtns.forEach((btn) => {
-    btn.addEventListener('click', function() {
-        this.classList.toggle("active");
-        let card = this.nextElementSibling;
-        if (card.style.display === "block") {
-            card.style.display = "none"
-        } else {
-            card.style.display = "block"
-        }
+notificationPars.forEach((para) => {
+    para.addEventListener('click', (e) => {
+        const id = e.target.id
+        todos = filterTodos(id)
+        setProjects(todos)
     })
 })
 
@@ -155,6 +171,7 @@ todoPars.forEach(par => {
         checkbox.addEventListener('change', () => {
             todo.status = todo.status ? false : true
             update(todo.id, todo)
+            setNotifications()
         })
     })
 })
@@ -179,7 +196,6 @@ addProjectForm.addEventListener('submit', (event) => {
         save(project, 'projects')
         addProjectForm.reset()
         addProjectDlg.close()
-        printReport()
         setProjects()
     }
 })
@@ -199,7 +215,6 @@ addTodoForm.addEventListener('submit', (event) => {
         save(todo)
         addTodoForm.reset()
         addTodoDlg.close()
-        printReport()
         setProjects()
     }
 })
