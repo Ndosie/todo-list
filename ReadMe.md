@@ -1,10 +1,12 @@
 # Todo App
 
 A small client-side todo list app built with plain HTML, CSS and JavaScript.
+![Alt text](demo.png "Optional Title")
 
 Briefly:
 - Add projects and todos.
 - View project cards that collapse/expand.
+- Delete todo and update todo status
 - Persist data in `localStorage`.
 - View counts for overdue, today, week, month, done and all.
 
@@ -38,12 +40,7 @@ Next steps (suggested)
 ----------------------
 
 1. Implement Update functionality for todos and projects
-	- Add an `update(key, id, changes)` helper in `service/local_storage.js` that finds the item by `id`, merges `changes`, and writes the updated array back to `localStorage`.
-	- Wire an "Edit" form/modal that lets users change `title`, `dueDate`, `priority`, and `status`, then call `update('todos', todoId, changes)` and refresh the UI.
+	- Add delete buttons in the UI (project-level and todo-level). Wire an "Edit" form/modal that lets users change `title`, `dueDate`, `priority`, and `status`, then call `update('todos', todoId, changes)` and refresh the UI.
 
-2. Implement Delete functionality for todos and projects
-	- Add a `deleteItem(key, id)` helper in `service/local_storage.js` that removes the item with the given `id` and persists the new array.
-	- Add delete buttons in the UI (project-level and todo-level). When deleting a project, decide whether to also delete its todos or reassign them.
-
-3. Improve UX
+2. Improve UX
 	- Add confirmations for destructive actions (delete), better input validation feedback, and keyboard accessibility for dialogs.

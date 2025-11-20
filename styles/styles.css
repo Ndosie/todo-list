@@ -161,19 +161,30 @@ a {
     display: none;
 }
 
-.todos p{
-    width: 100%;
+.todo p{
+    width: 90%;
     box-sizing: border-box;
-    display: inline-block;
+    display: inline;
     border-bottom: 2px solid #eee;
     background-color: #e1e8f0;
     padding: 8px;
     margin: 0;
 }
 
-.todos p:hover {
+.todo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.todo p:hover {
     background-color: #eee;
     cursor: pointer;
+}
+
+.material-icons{
+    font-size: 40px;
+    color: red;
 }
 
 .add-todo {

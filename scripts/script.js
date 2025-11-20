@@ -20,6 +20,19 @@ function setCollapseBtns() {
     })
 }
 
+function setIcons() {
+    const icons = document.querySelectorAll('.material-icons')
+    icons.forEach((icon) => {
+        icon.addEventListener('click', function() {
+            const id = this.id.split('_')[1]
+            deleteItem(id)
+            setProjects([])
+            setIcons()
+            setNotifications()
+        })
+    })
+}
+
 function setProjects(todos) {
     const cardsDiv = document.querySelector('.cards')
     projects = retrieve('projects')
@@ -37,7 +50,7 @@ function setProjects(todos) {
             const projectTodos = todos.filter(todo => todo.projectId === project.id)
             if (projectTodos.length !== 0) {
                 projectTodos.forEach(todo => {
-                    projectsContent += `<p id=${todo.id} class="todo">${todo.title} by ${todo.dueDate}</p>`
+                    projectsContent += `<div class="todo"><p id=${todo.id}>${todo.title} by ${todo.dueDate}</p><span class="material-icons" id="deletetodo_${todo.id}">delete</span></div>`
                 })
             } else {
                 projectsContent += `<div>No todos for this project, Please add one.</div>`
@@ -107,8 +120,6 @@ function setNotifications() {
     allSpan.textContent = filterTodos('all').length
 }
 
-setProjects(todos)
-
 const addProjectBtn = document.querySelector('#add-project')
 const addProjectDlg = document.querySelector('#project-form')
 const cancelProjectDlg = document.querySelector('#project-cancel-dia')
@@ -123,7 +134,9 @@ const addTodoForm = document.querySelector('#add-todo-form')
 const notificationPars = document.querySelectorAll('.links p')
 let projectId = ""
 
+setProjects(todos)
 setNotifications()
+setIcons()
 
 notificationPars.forEach((para) => {
     para.addEventListener('click', (e) => {

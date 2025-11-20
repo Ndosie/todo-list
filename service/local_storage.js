@@ -37,7 +37,7 @@ export const update = (id, data, key="todos") => {
     }
 }
 
-export const deleteItem = (key, id) => {
+export const deleteItem = (id, key='todos') => {
     if (key === 'todos') {
         todos = retrieve(key)
         todos = todos.filter(todo => todo.id !== id)
